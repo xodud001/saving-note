@@ -1,7 +1,7 @@
 package hello.kotlin.savingnote.record.dto
 
 data class CreateRecordRequest(
-    val title: String,
-    val amount: String,
+    val description: String,
+    val amount: Int,
     val isIncome: Boolean
 )
