@@ -2,7 +2,7 @@ package hello.kotlin.savingnote.record.dto
 
 import java.time.OffsetDateTime
 
-data class ReadRecordRequest(
+data class ReadRecordResponse(
     val id: Long,
     val issuedAt: OffsetDateTime,
     val title: String,

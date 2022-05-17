@@ -1,13 +1,13 @@
 package hello.kotlin.savingnote.record.service
 
+import hello.kotlin.savingnote.common.dto.CustomPageResponse
 import hello.kotlin.savingnote.record.domain.Record
 import hello.kotlin.savingnote.record.dto.CreateRecordRequest
-import hello.kotlin.savingnote.record.dto.ReadRecordRequest
+import hello.kotlin.savingnote.record.dto.ReadRecordResponse
 import hello.kotlin.savingnote.record.repository.RecordRepository
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
-import org.thymeleaf.extras.java8time.util.TemporalCreationUtils
 import java.time.ZoneOffset
-import java.time.temporal.TemporalUnit
 
 @Service
 class RecordService(val recordRepository: RecordRepository) {
@@ -18,14 +18,28 @@ class RecordService(val recordRepository: RecordRepository) {
         return savedRecord.id
     }
 
-    fun findAll(): List<ReadRecordRequest> =
-        recordRepository.findAll()
-                    .map{ ReadRecordRequest(
+    fun findAll(page: Int): CustomPageResponse<ReadRecordResponse>{
+        val pageRequest = PageRequest.of(page, 5)
+
+        val recordPage = recordRepository.findAll(pageRequest)
+
+        val records = recordPage.content
+            .map {
+                ReadRecordResponse(
                     it.id,
                     it.issuedAt.atOffset(ZoneOffset.ofHours(9)),
                     it.description,
                     it.amount,
                     it.isIncome
-                    )}
-                    .toList()
+                )
+            }
+            .toList()
+
+        return CustomPageResponse(
+            totalPage = recordPage.totalPages,
+            currentPage = recordPage.number,
+            pageSize = recordPage.size,
+            content = records
+        )
+    }
 }

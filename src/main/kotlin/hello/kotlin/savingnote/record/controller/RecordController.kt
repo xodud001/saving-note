@@ -1,8 +1,8 @@
 package hello.kotlin.savingnote.record.controller
 
-import hello.kotlin.savingnote.record.domain.Record
+import hello.kotlin.savingnote.common.dto.CustomPageResponse
 import hello.kotlin.savingnote.record.dto.CreateRecordRequest
-import hello.kotlin.savingnote.record.dto.ReadRecordRequest
+import hello.kotlin.savingnote.record.dto.ReadRecordResponse
 import hello.kotlin.savingnote.record.service.RecordService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -13,7 +13,7 @@ import java.net.URI
 class RecordController(val recordService: RecordService) {
 
     @GetMapping
-    fun find(): List<ReadRecordRequest> = recordService.findAll()
+    fun findAll(@RequestParam page: Int): CustomPageResponse<ReadRecordResponse> = recordService.findAll(page)
 
     @PostMapping
     fun create(@RequestBody request: CreateRecordRequest): ResponseEntity<Any> {
