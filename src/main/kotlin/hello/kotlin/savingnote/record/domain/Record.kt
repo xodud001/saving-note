@@ -15,9 +15,9 @@ import javax.persistence.Id
  */
 @Entity(name = "record")
 class Record (
-    val description: String,
-    val amount: Int,
-    val isIncome: Boolean,
+    val description: String, // 이벤트 설명
+    val amount: Int, // 금액
+    val isIncome: Boolean, // 수입 / 지출 구분
 ){
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
